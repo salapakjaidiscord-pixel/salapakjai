@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="th" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ศาลาพักใจ - Sala PakJai Team Portal</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: Inter & Kanit & Cinzel -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:opsz,wght@14..32,500&family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Kanit', 'sans-serif'],
+            serif: ['Cinzel', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Cosmic Night Sky Theme Styling */
+    body {
+      background: radial-gradient(circle at 50% 30%, #0d1527 0%, #070a14 60%, #03050a 100%);
+      background-attachment: fixed;
+    }
+
+    /* Floating & Glowing Animations */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(0.5deg); }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+
+    @keyframes starTwinkle {
+      0%, 100% { opacity: 0.1; transform: scale(0.6); }
+      50% { opacity: 1; transform: scale(1.4); }
+    }
+
+    .animate-float { animation: floatSlow 6s ease-in-out infinite; }
+    .animate-glow { animation: pulseGlow 4s ease-in-out infinite; }
+    .animate-twinkle { animation: starTwinkle 3s ease-in-out infinite; }
+
+    /* 3D Glassmorphism Cards */
+    .glass-card {
+      background: rgba(13, 22, 41, 0.65);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(120, 160, 255, 0.15);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(147, 197, 253, 0.35);
+      box-shadow: 0 20px 40px -15px rgba(29, 78, 216, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .view-section { transition: all 0.3s ease-in-out; }
+    .view-hidden { display: none !important; opacity: 0; transform: translateY(12px); }
+
+    .logo-font {
+      font-family: 'Cinzel', serif;
+      letter-spacing: -1px;
+    }
+
+    /* Accordion / Hover Animation for Score Boost Cards */
+    .tip-card-content {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    .tip-card:hover .tip-card-content,
+    .tip-card.active .tip-card-content {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+
+    .tip-card-inner {
+      overflow: hidden;
+    }
+
+    .chevron-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .tip-card:hover .chevron-icon,
+    .tip-card.active .chevron-icon {
+      transform: rotate(180deg);
+    }
+
+    /* Smooth Height/Opacity Transition for Login Field Animation */
+    .animated-input-group {
+      display: grid;
+      grid-template-rows: 1fr;
+      opacity: 1;
+      transform: translateY(0);
+      transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, transform 0.25s ease;
+      overflow: hidden;
+    }
+
+    .animated-input-group.collapsed {
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+
+    .animated-input-inner {
+      min-height: 0;
+    }
+
+    /* ========================================== */
+    /* SHINY BUTTON STYLES                        */
+    /* ========================================== */
+    @property --gradient-angle {
+      syntax: "<angle>";
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    @property --gradient-angle-offset {
+      syntax: "<angle>";
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    @property --gradient-percent {
+      syntax: "<percentage>";
+      initial-value: 5%;
+      inherits: false;
+    }
+
+    @property --gradient-shine {
+      syntax: "<color>";
+      initial-value: white;
+      inherits: false;
+    }
+
+    .shiny-cta {
+      --shiny-cta-bg: #0d1527;
+      --shiny-cta-bg-subtle: #1a233a;
+      --shiny-cta-fg: #ffffff;
+      --shiny-cta-highlight: #2563eb;
+      --shiny-cta-highlight-subtle: #60a5fa;
+      --animation: gradient-angle linear infinite;
+      --duration: 3s;
+      --shadow-size: 2px;
+      --transition: 800ms cubic-bezier(0.25, 1, 0.5, 1);
+      
+      isolation: isolate;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      outline-offset: 4px;
+      padding: 0.5rem 1.25rem;
+      font-family: "Kanit", sans-serif;
+      font-size: 0.8125rem;
+      line-height: 1.2;
+      font-weight: 500;
+      border: 1px solid transparent;
+      border-radius: 360px;
+      color: var(--shiny-cta-fg);
+      background: linear-gradient(var(--shiny-cta-bg), var(--shiny-cta-bg)) padding-box,
+        conic-gradient(
+          from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+          transparent,
+          var(--shiny-cta-highlight) var(--gradient-percent),
+          var(--gradient-shine) calc(var(--gradient-percent) * 2),
+          var(--shiny-cta-highlight) calc(var(--gradient-percent) * 3),
+          transparent calc(var(--gradient-percent) * 4)
+        ) border-box;
+      box-shadow: inset 0 0 0 1px var(--shiny-cta-bg-subtle);
+      transition: var(--transition);
+      transition-property: --gradient-angle-offset, --gradient-percent, --gradient-shine;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+
+    .shiny-cta-danger {
+      --shiny-cta-bg: #1c0c12;
+      --shiny-cta-bg-subtle: #3a1a24;
+      --shiny-cta-highlight: #e11d48;
+      --shiny-cta-highlight-subtle: #fb7185;
+    }
+
+    .shiny-cta::before,
+    .shiny-cta::after,
+    .shiny-cta span::before {
+      content: "";
+      pointer-events: none;
+      position: absolute;
+      inset-inline-start: 50%;
+      inset-block-start: 50%;
+      translate: -50% -50%;
+      z-index: -1;
+    }
+
+    .shiny-cta:active {
+      translate: 0 1px;
+    }
+
+    .shiny-cta::before {
+      --size: calc(100% - var(--shadow-size) * 3);
+      --position: 2px;
+      --space: calc(var(--position) * 2);
+      width: var(--size);
+      height: var(--size);
+      background: radial-gradient(
+        circle at var(--position) var(--position),
+        white calc(var(--position) / 4),
+        transparent 0
+      ) padding-box;
+      background-size: var(--space) var(--space);
+      background-repeat: space;
+      mask-image: conic-gradient(
+        from calc(var(--gradient-angle) + 45deg),
+        black,
+        transparent 10% 90%,
+        black
+      );
+      border-radius: inherit;
+      opacity: 0.4;
+      z-index: -1;
+    }
+
+    .shiny-cta::after {
+      --animation: shimmer linear infinite;
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(
+        -50deg,
+        transparent,
+        var(--shiny-cta-highlight),
+        transparent
+      );
+      mask-image: radial-gradient(circle at bottom, transparent 40%, black);
+      opacity: 0.6;
+    }
+
+    .shiny-cta span {
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .shiny-cta span::before {
+      --size: calc(100% + 1rem);
+      width: var(--size);
+      height: var(--size);
+      box-shadow: inset 0 -1ex 2rem 4px var(--shiny-cta-highlight);
+      opacity: 0;
+      transition: opacity var(--transition);
+      animation: calc(var(--duration) * 1.5) breathe linear infinite;
+    }
+
+    .shiny-cta,
+    .shiny-cta::before,
+    .shiny-cta::after {
+      animation: var(--animation) var(--duration),
+        var(--animation) calc(var(--duration) / 0.4) reverse paused;
+      animation-composition: add;
+    }
+
+    .shiny-cta:is(:hover, :focus-visible) {
+      --gradient-percent: 20%;
+      --gradient-angle-offset: 95deg;
+      --gradient-shine: var(--shiny-cta-highlight-subtle);
+    }
+
+    .shiny-cta:is(:hover, :focus-visible),
+    .shiny-cta:is(:hover, :focus-visible)::before,
+    .shiny-cta:is(:hover, :focus-visible)::after {
+      animation-play-state: running;
+    }
+
+    .shiny-cta:is(:hover, :focus-visible) span::before {
+      opacity: 1;
+    }
+
+    @keyframes gradient-angle {
+      to { --gradient-angle: 360deg; }
+    }
+
+    @keyframes shimmer {
+      to { rotate: 360deg; }
+    }
+
+    @keyframes breathe {
+      from, to { scale: 1; }
+      50% { scale: 1.2; }
+    }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen font-sans antialiased selection:bg-blue-600 selection:text-white relative overflow-x-hidden flex flex-col justify-between">
+
+  <!-- Cosmic Background Glows & Dense Twinkling Stars -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div class="absolute -top-40 -left-40 w-[35rem] h-[35rem] bg-blue-900/25 rounded-full blur-[140px] animate-glow"></div>
+    <div class="absolute top-1/3 -right-40 w-[30rem] h-[30rem] bg-indigo-900/20 rounded-full blur-[130px]"></div>
+    <div class="absolute -bottom-40 left-1/3 w-[35rem] h-[35rem] bg-slate-900/40 rounded-full blur-[150px]"></div>
+
+    <!-- Dense Star Field -->
+    <div class="absolute top-12 left-[10%] w-1 h-1 bg-white rounded-full animate-twinkle"></div>
+    <div class="absolute top-20 left-[25%] w-1.5 h-1.5 bg-blue-200 rounded-full animate-twinkle" style="animation-delay: 0.7s;"></div>
+    <div class="absolute top-10 left-[45%] w-1 h-1 bg-indigo-100 rounded-full animate-twinkle" style="animation-delay: 1.4s;"></div>
+    <div class="absolute top-24 left-[70%] w-2 h-2 bg-blue-100 rounded-full animate-twinkle" style="animation-delay: 0.3s;"></div>
+    <div class="absolute top-16 left-[88%] w-1 h-1 bg-white rounded-full animate-twinkle" style="animation-delay: 1.9s;"></div>
+
+    <div class="absolute top-[32%] left-[5%] w-1.5 h-1.5 bg-blue-300 rounded-full animate-twinkle" style="animation-delay: 1.1s;"></div>
+    <div class="absolute top-[28%] left-[18%] w-1 h-1 bg-white rounded-full animate-twinkle" style="animation-delay: 2.2s;"></div>
+    <div class="absolute top-[35%] left-[38%] w-1 h-1 bg-indigo-200 rounded-full animate-twinkle" style="animation-delay: 0.5s;"></div>
+    <div class="absolute top-[30%] left-[60%] w-1.5 h-1.5 bg-white rounded-full animate-twinkle" style="animation-delay: 1.6s;"></div>
+    <div class="absolute top-[38%] left-[82%] w-1 h-1 bg-blue-200 rounded-full animate-twinkle" style="animation-delay: 0.9s;"></div>
+    <div class="absolute top-[25%] left-[95%] w-1.5 h-1.5 bg-indigo-100 rounded-full animate-twinkle" style="animation-delay: 2.5s;"></div>
+
+    <div class="absolute top-[55%] left-[8%] w-1 h-1 bg-white rounded-full animate-twinkle" style="animation-delay: 1.8s;"></div>
+    <div class="absolute top-[60%] left-[22%] w-2 h-2 bg-blue-200 rounded-full animate-twinkle" style="animation-delay: 0.4s;"></div>
+    <div class="absolute top-[50%] left-[50%] w-1 h-1 bg-indigo-100 rounded-full animate-twinkle" style="animation-delay: 1.2s;"></div>
+    <div class="absolute top-[58%] left-[75%] w-1.5 h-1.5 bg-white rounded-full animate-twinkle" style="animation-delay: 2.1s;"></div>
+    <div class="absolute top-[52%] left-[90%] w-1 h-1 bg-blue-300 rounded-full animate-twinkle" style="animation-delay: 0.8s;"></div>
+
+    <div class="absolute bottom-[20%] left-[12%] w-1.5 h-1.5 bg-indigo-200 rounded-full animate-twinkle" style="animation-delay: 0.6s;"></div>
+    <div class="absolute bottom-[15%] left-[30%] w-1 h-1 bg-white rounded-full animate-twinkle" style="animation-delay: 1.5s;"></div>
+    <div class="absolute bottom-[25%] left-[55%] w-2 h-2 bg-blue-100 rounded-full animate-twinkle" style="animation-delay: 2.3s;"></div>
+    <div class="absolute bottom-[18%] left-[78%] w-1 h-1 bg-white rounded-full animate-twinkle" style="animation-delay: 0.2s;"></div>
+    <div class="absolute bottom-[10%] left-[92%] w-1.5 h-1.5 bg-indigo-300 rounded-full animate-twinkle" style="animation-delay: 1.7s;"></div>
+  </div>
+
+  <div>
+    <!-- Header Navigation Bar -->
+    <nav class="sticky top-0 z-40 bg-slate-950/70 backdrop-blur-2xl border-b border-blue-500/15 px-4 sm:px-8 py-3.5 shadow-xl">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        
+        <div class="flex items-center gap-3.5 cursor-pointer group" onclick="switchView('welcome')">
+          <div class="w-10 h-10 rounded-2xl bg-slate-900 border border-blue-400/30 flex items-center justify-center shadow-lg shadow-blue-500/10 group-hover:border-blue-400/60 group-hover:scale-105 transition duration-300">
+            <i data-lucide="sparkles" class="w-5 h-5 text-blue-300"></i>
+          </div>
+          <div>
+            <span class="text-lg font-bold text-white block leading-tight tracking-wide">ศาลาพักใจ</span>
+            <span class="text-[10px] text-blue-300/80 font-serif tracking-widest block uppercase">Sala PakJai System</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5">
+          <div id="userBadge" class="hidden items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-blue-400/20 text-xs shadow-inner">
+            <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+            <span id="userRoleText" class="font-medium text-slate-200">-</span>
+          </div>
+
+          <button onclick="openLogModal()" id="logsBtn" class="shiny-cta hidden">
+            <span><i data-lucide="history" class="w-3.5 h-3.5 text-blue-300"></i> Logs</span>
+          </button>
+
+          <button onclick="openLoginModal()" id="loginBtn" class="shiny-cta">
+            <span><i data-lucide="log-in" class="w-3.5 h-3.5"></i> เข้าสู่ระบบ</span>
+          </button>
+
+          <button onclick="logout()" id="logoutBtn" class="shiny-cta shiny-cta-danger hidden">
+            <span>ออกจากระบบ</span>
+          </button>
+        </div>
+
+      </div>
+    </nav>
+
+    <!-- ========================================== -->
+    <!-- VIEW 1: WELCOME / BANNER HERO DISPLAY      -->
+    <!-- ========================================== -->
+    <main id="welcomeView" class="view-section relative z-10 max-w-5xl mx-auto px-4 py-12 text-center space-y-12">
+      
+      <div class="animate-float relative max-w-2xl mx-auto">
+        <div class="absolute -inset-1 bg-gradient-to-r from-blue-600/30 via-indigo-500/30 to-purple-600/30 rounded-3xl blur-2xl opacity-70 animate-glow"></div>
+        
+        <div class="glass-card relative rounded-3xl p-8 sm:p-12 space-y-6 overflow-hidden">
+          
+          <div class="absolute -left-8 -top-8 w-24 h-24 rounded-full bg-gradient-to-tr from-blue-600/20 to-transparent border border-blue-400/20 pointer-events-none"></div>
+          <div class="absolute -right-8 -bottom-8 w-28 h-28 rounded-full bg-gradient-to-br from-indigo-600/20 to-transparent border border-indigo-400/20 pointer-events-none"></div>
+
+          <div class="flex justify-center">
+            <i data-lucide="sparkle" class="w-6 h-6 text-blue-300 animate-twinkle"></i>
+          </div>
+
+          <div class="space-y-1">
+            <div class="text-5xl sm:text-7xl font-black text-white logo-font tracking-tight drop-shadow-[0_4px_12px_rgba(59,130,246,0.3)]">
+              Sala
+            </div>
+            <div class="text-4xl sm:text-6xl font-black text-slate-100 logo-font tracking-tight drop-shadow-[0_4px_12px_rgba(99,102,241,0.3)]">
+              PakJai
+            </div>
+            <div class="text-[11px] text-blue-300/80 tracking-[0.25em] font-light uppercase pt-3">
+              base on banpho
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-4 border-t border-blue-500/15 text-xs text-slate-300/80 font-light">
+            <div>萨拉·帕吉</div>
+            <div>ศาลาพักใจ</div>
+            <div>อตฺตา หิ อตฺตโน นาโถ</div>
+            <div>사라팍자이</div>
+            <div>サラ・パックジャイ</div>
+            <div>Banpho Server</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="space-y-3 max-w-xl mx-auto">
+        <h1 class="text-2xl sm:text-4xl font-bold text-white leading-tight">
+          ระบบตรวจสอบคะแนนประเมิน <br>
+          <span class="bg-gradient-to-r from-blue-300 via-indigo-200 to-slate-300 bg-clip-text text-transparent">ทีมงานดิสศาลาพักใจ</span>
+        </h1>
+
+        <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+          ลงชื่อเข้าใช้ด้วยบัญชีส่วนตัวเพื่อเข้าสู่แดชบอร์ด ดูคะแนนประเมินรายบุคคล เกรดสรุป และกราฟสมรรถนะ
+        </p>
+      </div>
+
+      <div>
+        <button onclick="openLoginModal()" class="shiny-cta !text-sm !py-3 !px-6">
+          <span><i data-lucide="key-round" class="w-4 h-4"></i> ลงชื่อเข้าสู่ระบบส่วนบุคคล</span>
+        </button>
+      </div>
+    </main>
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: MEMBER PERSONAL DASHBOARD          -->
+    <!-- ========================================== -->
+    <main id="memberView" class="view-section view-hidden relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+      
+      <div class="glass-card p-6 sm:p-8 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden">
+        <div class="flex items-center gap-5">
+          <div id="memberAvatar" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white text-3xl font-bold flex items-center justify-center shadow-lg shadow-blue-600/30 border border-blue-400/30">
+            -
+          </div>
+          <div>
+            <div class="text-xs text-blue-300/80 font-medium uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-blue-300"></i> บัญชีทีมงานส่วนบุคคล
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1" id="memberNameHeader">สวัสดี คุณ--</h2>
+            <p class="text-xs text-slate-400 mt-1">สรุปผลการประเมินการทำงานดิสศาลาพักใจ</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 bg-slate-950/60 p-3.5 rounded-2xl border border-blue-500/15">
+          <div class="text-center px-4 border-r border-blue-500/15">
+            <div class="text-[11px] text-slate-400">เกรดของคุณ</div>
+            <div class="text-2xl font-bold text-emerald-400 mt-0.5" id="memberGradeText">--</div>
+          </div>
+          <div class="text-center px-4">
+            <div class="text-[11px] text-slate-400">อันดับในทีม</div>
+            <div class="text-2xl font-bold text-blue-300 mt-0.5" id="memberRankText">#--</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4" id="personalMetricsGrid"></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass-card rounded-3xl p-6 space-y-3">
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i data-lucide="radar" class="w-5 h-5 text-blue-400"></i>
+            วิเคราะห์สมรรถนะ 7 ด้าน
+          </h3>
+          <div class="h-64 w-full flex items-center justify-center">
+            <canvas id="personalRadarChart"></canvas>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-3xl p-6 space-y-4">
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i data-lucide="list-checks" class="w-5 h-5 text-indigo-400"></i>
+            รายละเอียดคะแนนแต่ละหมวด
+          </h3>
+          <div class="space-y-2.5 text-xs" id="personalBreakdownList"></div>
+        </div>
+      </div>
+
+      <!-- SCORE BOOST TIPS -->
+      <section class="glass-card rounded-3xl p-6 sm:p-8 space-y-6 relative overflow-hidden border-amber-500/20">
+        <div class="flex items-center justify-between border-b border-blue-500/15 pb-4">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-300">
+              <i data-lucide="zap" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                เทคนิคและภารกิจการเพิ่มคะแนนทีมงาน
+                <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">Score Boost</span>
+              </h3>
+              <p class="text-xs text-slate-400 mt-0.5">นำเมาส์ไปจ่อหรือคลิกเพื่อดูรายละเอียดภารกิจยื่นขอคะแนนบวก</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          
+          <div onclick="toggleTipCard(this)" class="tip-card p-4 rounded-2xl bg-slate-950/60 border border-blue-500/15 hover:border-amber-400/40 transition cursor-pointer select-none">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="p-2 rounded-xl bg-purple-500/15 text-purple-300 shrink-0">
+                  <i data-lucide="video" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-xs sm:text-sm text-white">ทำคลิปโปรโมทเซิร์ฟเวอร์</h4>
+                  <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 inline-block mt-0.5">+10 ถึง +30 คะแนน</span>
+                </div>
+              </div>
+              <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-slate-400 shrink-0 ml-2"></i>
+            </div>
+            <div class="tip-card-content">
+              <div class="tip-card-inner pt-3 text-xs text-slate-400 leading-relaxed border-t border-slate-800/80 mt-3">
+                อัดคลิปไฮไลท์ บรรยากาศดิส หรือคลิปตลกสั้นๆ ลง TikTok, Reels หรือ Shorts พร้อมติดแฮชแท็กดิสศาลาพักใจเพื่อโปรโมท
+              </div>
+            </div>
+          </div>
+
+          <div onclick="toggleTipCard(this)" class="tip-card p-4 rounded-2xl bg-slate-950/60 border border-blue-500/15 hover:border-amber-400/40 transition cursor-pointer select-none">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="p-2 rounded-xl bg-blue-500/15 text-blue-300 shrink-0">
+                  <i data-lucide="user-plus" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-xs sm:text-sm text-white">ชวนเพื่อนใหม่เข้าดิส</h4>
+                  <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 inline-block mt-0.5">+5 ถึง +15 คะแนน</span>
+                </div>
+              </div>
+              <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-slate-400 shrink-0 ml-2"></i>
+            </div>
+            <div class="tip-card-content">
+              <div class="tip-card-inner pt-3 text-xs text-slate-400 leading-relaxed border-t border-slate-800/80 mt-3">
+                สร้างลิงก์เชิญส่วนตัว (Invite Link) ชวนเพื่อนใหม่เข้าดิสคอร์ด และคอยต้อนรับแนะนำยศเบื้องต้นในเซิร์ฟเวอร์
+              </div>
+            </div>
+          </div>
+
+          <div onclick="toggleTipCard(this)" class="tip-card p-4 rounded-2xl bg-slate-950/60 border border-blue-500/15 hover:border-amber-400/40 transition cursor-pointer select-none">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="p-2 rounded-xl bg-amber-500/15 text-amber-300 shrink-0">
+                  <i data-lucide="party-popper" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-xs sm:text-sm text-white">จัดกิจกรรมในเซิร์ฟเวอร์</h4>
+                  <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 inline-block mt-0.5">+15 ถึง +25 คะแนน</span>
+                </div>
+              </div>
+              <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-slate-400 shrink-0 ml-2"></i>
+            </div>
+            <div class="tip-card-content">
+              <div class="tip-card-inner pt-3 text-xs text-slate-400 leading-relaxed border-t border-slate-800/80 mt-3">
+                เสนอและเป็นหัวเรือจัดกิจกรรมย่อย เช่น เล่นเกมสตรีม จัดมินิเกม หรือจัดห้องฟังเพลงพูดคุยสร้างสีสันในดิส
+              </div>
+            </div>
+          </div>
+
+          <div onclick="toggleTipCard(this)" class="tip-card p-4 rounded-2xl bg-slate-950/60 border border-blue-500/15 hover:border-amber-400/40 transition cursor-pointer select-none">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="p-2 rounded-xl bg-pink-500/15 text-pink-300 shrink-0">
+                  <i data-lucide="heart-handshake" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-xs sm:text-sm text-white">ช่วยตอบคำถาม / ดูแลห้อง</h4>
+                  <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 inline-block mt-0.5">+5 ถึง +10 คะแนน</span>
+                </div>
+              </div>
+              <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-slate-400 shrink-0 ml-2"></i>
+            </div>
+            <div class="tip-card-content">
+              <div class="tip-card-inner pt-3 text-xs text-slate-400 leading-relaxed border-t border-slate-800/80 mt-3">
+                ช่วยดูแลความสงบเรียบร้อย เฝ้าห้องเสียง สแตนบายตอบคำถามช่วยเหลือสมาชิกใหม่ที่เข้ามาสอบถามในดิส
+              </div>
+            </div>
+          </div>
+
+          <div onclick="toggleTipCard(this)" class="tip-card p-4 rounded-2xl bg-slate-950/60 border border-blue-500/15 hover:border-amber-400/40 transition cursor-pointer select-none">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="p-2 rounded-xl bg-cyan-500/15 text-cyan-300 shrink-0">
+                  <i data-lucide="paint-bucket" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-xs sm:text-sm text-white">ช่วยออกแบบสื่อ / Banners</h4>
+                  <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 inline-block mt-0.5">+10 ถึง +20 คะแนน</span>
+                </div>
+              </div>
+              <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-slate-400 shrink-0 ml-2"></i>
+            </div>
+            <div class="tip-card-content">
+              <div class="tip-card-inner pt-3 text-xs text-slate-400 leading-relaxed border-t border-slate-800/80 mt-3">
+                ช่วยออกแบบรูปภาพตกแต่งดิส รูปโปรโมทกิจกรรม หรือสร้างสรรค์สิ่งใหม่ๆ ให้เซิร์ฟเวอร์น่าอยู่ยิ่งขึ้น
+              </div>
+            </div>
+          </div>
+
+          <div onclick="toggleTipCard(this)" class="tip-card p-4 rounded-2xl bg-slate-950/60 border border-blue-500/15 hover:border-amber-400/40 transition cursor-pointer select-none">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="p-2 rounded-xl bg-emerald-500/15 text-emerald-300 shrink-0">
+                  <i data-lucide="clock" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-xs sm:text-sm text-white">ความสม่ำเสมอในการทำงาน</h4>
+                  <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 inline-block mt-0.5">+10 คะแนน/เดือน</span>
+                </div>
+              </div>
+              <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-slate-400 shrink-0 ml-2"></i>
+            </div>
+            <div class="tip-card-content">
+              <div class="tip-card-inner pt-3 text-xs text-slate-400 leading-relaxed border-t border-slate-800/80 mt-3">
+                เข้าปฏิบัติหน้าที่ตรงเวลา รักษามารยาทคำพูดที่ดีเยี่ยมต่อเนื่องตลอดทั้งเดือน โดยไม่โดนตัดคะแนน
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-blue-950/40 border border-blue-400/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-blue-200">
+          <div class="flex items-center gap-2">
+            <i data-lucide="info" class="w-4 h-4 text-blue-400 shrink-0"></i>
+            <span>เมื่อทำผลงานเรียบร้อยแล้ว สามารถยื่นส่งผลงานไปที่เซิร์ฟเวอร์ดิสคอร์ดได้ทันที</span>
+          </div>
+          <a href="https://discord.gg/Q95P2HHZhU" target="_blank" rel="noopener noreferrer" class="shiny-cta">
+            <span><i data-lucide="send" class="w-3.5 h-3.5"></i> ยื่นผลงานในดิส</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- VIEW 3: ADMIN CONSOLE                      -->
+    <!-- ========================================== -->
+    <main id="adminView" class="view-section view-hidden relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-blue-500/15 pb-6">
+        <div>
+          <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+            <i data-lucide="shield-alert" class="w-6 h-6 text-amber-400"></i>
+            ผู้ดูแลระบบ (Admin Console)
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">จัดการคะแนนทีมงานทั้งหมด ดูภาพรวม และแก้ไขคะแนน</p>
+        </div>
+      </div>
+
+      <section class="glass-card rounded-3xl p-6 space-y-6">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <h3 class="text-lg font-bold text-white">ตารางคะแนนทีมงานทั้งหมด</h3>
+          <input type="text" id="adminSearchInput" oninput="applyAdminFilter()" placeholder="ค้นหาชื่อทีมงาน..." class="bg-slate-950/80 border border-blue-500/20 rounded-xl px-4 py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-400">
+        </div>
+
+        <div class="overflow-x-auto rounded-2xl border border-blue-500/15">
+          <table class="w-full text-left text-sm text-slate-200">
+            <thead class="bg-slate-950/90 text-xs uppercase text-slate-400 border-b border-blue-500/15">
+              <tr>
+                <th class="py-4 px-4 text-center">อันดับ</th>
+                <th class="py-4 px-6">ชื่อทีมงาน</th>
+                <th class="py-4 px-6 text-center">คะแนนรวม</th>
+                <th class="py-4 px-6 text-center">เกรด</th>
+                <th class="py-4 px-6 text-center">ความประพฤติ</th>
+                <th class="py-4 px-6 text-center">จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody" class="divide-y divide-blue-500/10 bg-slate-900/30"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- FOOTER: CONTACT SECTION                    -->
+  <!-- ========================================== -->
+  <footer class="relative z-10 border-t border-blue-500/15 bg-slate-950/80 backdrop-blur-2xl mt-16 py-10 px-4 sm:px-8">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      
+      <div class="text-center md:text-left space-y-1.5">
+        <div class="flex items-center justify-center md:justify-start gap-2">
+          <i data-lucide="sparkles" class="w-4 h-4 text-blue-400"></i>
+          <span class="font-bold text-white text-base">ดิสศาลาพักใจ (Sala PakJai)</span>
+        </div>
+        <p class="text-xs text-slate-400">ระบบประเมินผลและเช็คคะแนนทีมงานอย่างเป็นทางการ • Base on Banpho</p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center gap-4">
+        <a href="mailto:salapakjai.discord@gmail.com" class="px-4 py-2.5 rounded-2xl bg-blue-950/50 hover:bg-blue-900/50 border border-blue-400/30 text-xs text-slate-200 flex items-center gap-2.5 transition hover:scale-105 shadow-md">
+          <div class="p-1.5 rounded-lg bg-blue-600/30 text-blue-300">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-400">ติดต่อสอบถาม / ติดต่อแอดมิน</div>
+            <div class="font-semibold text-blue-300">salapakjai.discord@gmail.com</div>
+          </div>
+        </a>
+
+        <a href="https://discord.gg/Q95P2HHZhU" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-2xl bg-indigo-950/50 hover:bg-indigo-900/50 border border-indigo-400/30 text-xs text-slate-200 flex items-center gap-2.5 transition hover:scale-105 shadow-md">
+          <div class="p-1.5 rounded-lg bg-indigo-600/30 text-indigo-300">
+            <i data-lucide="message-square" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-400">เซิร์ฟเวอร์ดิสคอร์ด</div>
+            <div class="font-semibold text-indigo-300">Discord ศาลาพักใจ</div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+    <div class="max-w-7xl mx-auto pt-6 mt-6 border-t border-blue-500/10 text-center text-[11px] text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>© 2026 Sala PakJai. สงวนลิขสิทธิ์ ห้ามคัดลอกหรือเลียนแบบ</div>
+      <div>อตฺตา หิ อตฺตโน นาโถ • ✦ base on banpho ✦</div>
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- THEME-MATCHED LOGIN MODAL (COSMIC STYLE)   -->
+  <!-- ========================================== -->
+  <div id="loginModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="relative w-full max-w-sm">
+      <!-- Glow & Ambient Light -->
+      <div class="absolute -inset-1 bg-gradient-to-r from-blue-600/30 via-indigo-500/30 to-purple-600/30 rounded-3xl blur-2xl opacity-70 animate-glow pointer-events-none"></div>
+
+      <div class="glass-card relative rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl overflow-hidden border border-blue-400/30">
+        
+        <!-- Close Button -->
+        <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Logo & Header -->
+        <div class="text-center space-y-1.5">
+          <div class="mx-auto w-12 h-12 rounded-2xl bg-slate-900 border border-blue-400/30 flex items-center justify-center shadow-lg shadow-blue-500/10">
+            <i data-lucide="sparkles" class="w-6 h-6 text-blue-300"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white tracking-tight">เข้าสู่ระบบส่วนบุคคล</h3>
+          <p class="text-xs text-slate-400">เลือกประเภทสิทธิ์และกรอกข้อมูลเพื่อใช้งาน</p>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+          
+          <!-- Role Selector -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">ระดับสิทธิ์การใช้งาน</label>
+            <select id="loginRole" onchange="toggleRoleInput()" class="w-full bg-slate-950/90 border border-blue-500/20 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-blue-400 transition">
+              <option value="MEMBER">ทีมงานส่วนบุคคล (Member)</option>
+              <option value="ADMIN">ผู้ดูแลระบบ (Admin)</option>
+            </select>
+          </div>
+
+          <!-- Animated Username Input Group -->
+          <div id="usernameFieldGroup" class="animated-input-group">
+            <div class="animated-input-inner">
+              <label class="block text-xs font-semibold text-slate-300 mb-1">ชื่อผู้ใช้ (Username)</label>
+              <div class="relative flex items-center">
+                <i data-lucide="user" class="absolute left-3.5 w-4 h-4 text-blue-400/70"></i>
+                <input type="text" id="loginUsername" placeholder="เช่น sun, nam, tae..." class="w-full bg-slate-950/90 border border-blue-500/20 rounded-xl px-4 py-2.5 text-xs text-slate-200 placeholder:text-slate-600 pl-10 focus:outline-none focus:border-blue-400 transition">
+              </div>
+            </div>
+          </div>
+
+          <!-- Password Input -->
+          <div class="relative">
+            <label class="block text-xs font-semibold text-slate-300 mb-1">รหัสผ่าน (Password)</label>
+            <div class="relative flex items-center">
+              <i data-lucide="lock" class="absolute left-3.5 w-4 h-4 text-blue-400/70"></i>
+              <input type="password" id="loginPassword" required placeholder="กรอกรหัสผ่าน..." class="w-full bg-slate-950/90 border border-blue-500/20 rounded-xl px-4 py-2.5 text-xs text-slate-200 placeholder:text-slate-600 pl-10 pr-10 focus:outline-none focus:border-blue-400 transition">
+              
+              <!-- Toggle Password Eye -->
+              <div onclick="togglePasswordVisibility()" class="absolute right-3.5 cursor-pointer text-slate-400 hover:text-white transition">
+                <i id="eyeIcon" data-lucide="eye-off" class="w-4 h-4"></i>
+              </div>
+            </div>
+          </div>
+
+          <div id="loginError" class="text-xs text-rose-400 hidden text-center font-medium bg-rose-500/10 py-2 rounded-xl border border-rose-500/20"></div>
+
+          <!-- Shiny Submit Button -->
+          <button type="submit" class="shiny-cta w-full !py-3 !justify-center mt-2">
+            <span><i data-lucide="log-in" class="w-4 h-4"></i> เข้าสู่ระบบ</span>
+          </button>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Edit Score Modal -->
+  <div id="editModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative">
+      <button onclick="closeEditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <div class="border-b border-blue-500/15 pb-3">
+        <h3 class="text-lg font-bold text-white">แก้ไขคะแนนทีมงาน</h3>
+        <p class="text-xs text-blue-300 font-medium mt-0.5" id="editMemberName">-</p>
+      </div>
+
+      <form id="editScoreForm" onsubmit="saveScoreUpdate(event)" class="space-y-3">
+        <div class="grid grid-cols-2 gap-3 text-xs">
+          <div><label class="block text-slate-400 mb-1">งานแผนก</label><input type="number" id="edit_dept" class="w-full bg-slate-950 border border-blue-500/20 rounded-lg p-2 text-slate-200"></div>
+          <div><label class="block text-slate-400 mb-1">การช่วยเหลือ</label><input type="number" id="edit_help" class="w-full bg-slate-950 border border-blue-500/20 rounded-lg p-2 text-slate-200"></div>
+          <div><label class="block text-slate-400 mb-1">ความประพฤติ</label><input type="number" id="edit_conduct" class="w-full bg-slate-950 border border-blue-500/20 rounded-lg p-2 text-slate-200"></div>
+          <div><label class="block text-slate-400 mb-1">ทัศนคติ</label><input type="number" id="edit_attitude" class="w-full bg-slate-950 border border-blue-500/20 rounded-lg p-2 text-slate-200"></div>
+          <div><label class="block text-slate-400 mb-1">มารยาท/การพูด</label><input type="number" id="edit_etiquette" class="w-full bg-slate-950 border border-blue-500/20 rounded-lg p-2 text-slate-200"></div>
+          <div><label class="block text-slate-400 mb-1">เวลางาน</label><input type="number" id="edit_time" class="w-full bg-slate-950 border border-blue-500/20 rounded-lg p-2 text-slate-200"></div>
+          <div class="col-span-2"><label class="block text-slate-400 mb-1">ผลงาน</label><input type="number" id="edit_work" class="w-full bg-slate-950 border border-blue-500/20 rounded-lg p-2 text-slate-200"></div>
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="closeEditModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 text-xs text-slate-300 hover:bg-slate-700 transition">ยกเลิก</button>
+          <button type="submit" class="shiny-cta w-1/2 !py-2.5 !justify-center">
+            <span>บันทึกเปลี่ยนแปลง</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Logs History Modal -->
+  <div id="logsModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl max-w-3xl w-full p-6 space-y-5 shadow-2xl relative">
+      <button onclick="closeLogModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <h3 class="text-lg font-bold text-white border-b border-blue-500/15 pb-3">ประวัติการแก้ไขคะแนน (Log History)</h3>
+      <div class="overflow-y-auto max-h-96 rounded-xl border border-blue-500/15">
+        <table class="w-full text-left text-xs text-slate-200">
+          <thead class="bg-slate-950 text-slate-400 uppercase border-b border-blue-500/15 sticky top-0">
+            <tr>
+              <th class="py-3 px-4">วัน-เวลา</th>
+              <th class="py-3 px-4">ทีมงานที่ถูกแก้ไข</th>
+              <th class="py-3 px-4 text-center">คะแนนเดิม ➔ ใหม่</th>
+              <th class="py-3 px-4">รายละเอียด</th>
+            </tr>
+          </thead>
+          <tbody id="logsTableBody" class="divide-y divide-blue-500/10 bg-slate-900/30"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const membersData = [
+      { name: "ซัน", username: "sun", password: "11", dept: 100, help: 100, conduct: 100, attitude: 100, etiquette: 100, time: 100, work: 100, status: "ดีที่สุด" },
+      { name: "น้ำ", username: "nam", password: "22", dept: 90, help: 75, conduct: 100, attitude: 90, etiquette: 82, time: 92, work: 90, status: "ดี" },
+      { name: "เต้", username: "tae", password: "33", dept: 84, help: 70, conduct: 100, attitude: 89, etiquette: 80, time: 80, work: 87, status: "สูงมาก" },
+      { name: "เฟม", username: "fame", password: "44", dept: 60, help: 60, conduct: 100, attitude: 80, etiquette: 80, time: 60, work: 70, status: "พอใช้เล็กน้อย" },
+      { name: "สกาย", username: "sky", password: "55", dept: 65, help: 50, conduct: 100, attitude: 50, etiquette: 50, time: 50, work: 50, status: "แย่มาก" },
+      { name: "ชัย", username: "chai", password: "66", dept: 50, help: 50, conduct: 80, attitude: 50, etiquette: 50, time: 50, work: 50, status: "แย่ที่สุด" },
+      { name: "กั๊ก", username: "guk", password: "77", dept: 50, help: 50, conduct: 30, attitude: 50, etiquette: 50, time: 50, work: 50, status: "ไม่ผ่านเกณฑ์" },
+      { name: "นัน", username: "nun", password: "88", dept: 50, help: 50, conduct: -100, attitude: 50, etiquette: 50, time: 50, work: 50, status: "ไม่ผ่านเกณฑ์" }
+    ];
+
+    const ADMIN_PASSWORD = "admin1234";
+    let logsHistory = [];
+    let currentUser = JSON.parse(localStorage.getItem('salapakjai_html_user')) || null;
+    let personalRadarChartInstance = null;
+    let editingMemberName = null;
+
+    function calculateMemberDetails(m) {
+      const overall = (m.dept + m.help + m.conduct + m.attitude + m.etiquette + m.time + m.work) / 7;
+      let grade = "F";
+      if (overall >= 100) grade = "S+";
+      else if (overall >= 97) grade = "S-";
+      else if (overall >= 92) grade = "A+";
+      else if (overall >= 87) grade = "A-";
+      else if (overall >= 82) grade = "B+";
+      else if (overall >= 77) grade = "B-";
+      else if (overall >= 75) grade = "C+";
+      else if (overall >= 70) grade = "C-";
+      else if (overall >= 65) grade = "D+";
+      else if (overall >= 60) grade = "D-";
+      else if (overall >= 55) grade = "E+";
+      else if (overall >= 50) grade = "E-";
+
+      return { ...m, overall: Number(overall.toFixed(2)), grade };
+    }
+
+    function getAllCalculatedMembers() {
+      const list = membersData.map(m => calculateMemberDetails(m));
+      list.sort((a, b) => b.overall - a.overall);
+      return list.map((item, idx) => ({ ...item, rank: idx + 1 }));
+    }
+
+    function getGradeBadgeStyle(grade) {
+      if (['S+', 'S-'].includes(grade)) return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30';
+      if (['A+', 'A-'].includes(grade)) return 'bg-teal-500/20 text-teal-300 border-teal-500/30';
+      if (['B+', 'B-'].includes(grade)) return 'bg-blue-500/20 text-blue-300 border-blue-500/30';
+      if (['C+', 'C-'].includes(grade)) return 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30';
+      return 'bg-rose-500/20 text-rose-300 border-rose-500/30';
+    }
+
+    function toggleTipCard(cardEl) {
+      cardEl.classList.toggle('active');
+    }
+
+    function toggleRoleInput() {
+      const role = document.getElementById('loginRole').value;
+      const usernameFieldGroup = document.getElementById('usernameFieldGroup');
+      const usernameInput = document.getElementById('loginUsername');
+      
+      if (role === 'ADMIN') {
+        usernameFieldGroup.classList.add('collapsed');
+        usernameInput.removeAttribute('required');
+      } else {
+        usernameFieldGroup.classList.remove('collapsed');
+        usernameInput.setAttribute('required', 'true');
+      }
+    }
+
+    function togglePasswordVisibility() {
+      const passwordInput = document.getElementById('loginPassword');
+      const eyeIcon = document.getElementById('eyeIcon');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.setAttribute('data-lucide', 'eye');
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.setAttribute('data-lucide', 'eye-off');
+      }
+      lucide.createIcons();
+    }
+
+    function updateAppView() {
+      if (!currentUser) {
+        showView('welcome');
+        return;
+      }
+
+      const allMembers = getAllCalculatedMembers();
+
+      if (currentUser.role === 'MEMBER') {
+        const myData = allMembers.find(m => m.username.toLowerCase() === currentUser.username.toLowerCase());
+        if (myData) {
+          renderPersonalDashboard(myData);
+          showView('member');
+        } else {
+          logout();
+        }
+      } else if (currentUser.role === 'ADMIN') {
+        renderAdminTable(allMembers);
+        showView('admin');
+      }
+    }
+
+    function renderPersonalDashboard(m) {
+      document.getElementById('memberAvatar').textContent = m.name.charAt(0);
+      document.getElementById('memberNameHeader').textContent = `สวัสดี คุณ${m.name}`;
+      document.getElementById('memberGradeText').textContent = m.grade;
+      document.getElementById('memberRankText').textContent = `#${m.rank}`;
+
+      const grid = document.getElementById('personalMetricsGrid');
+      grid.innerHTML = `
+        <div class="glass-card p-4 rounded-2xl text-center">
+          <div class="text-[11px] text-slate-400">คะแนนภาพรวม</div>
+          <div class="text-2xl font-bold text-white mt-1">${m.overall.toFixed(2)}</div>
+        </div>
+        <div class="glass-card p-4 rounded-2xl text-center">
+          <div class="text-[11px] text-slate-400">ผลสรุปเกรด</div>
+          <div class="text-2xl font-bold text-emerald-400 mt-1">${m.grade}</div>
+        </div>
+        <div class="glass-card p-4 rounded-2xl text-center">
+          <div class="text-[11px] text-slate-400">ความประพฤติ</div>
+          <div class="text-2xl font-bold ${m.conduct < 0 ? 'text-rose-400' : 'text-blue-300'} mt-1">${m.conduct}</div>
+        </div>
+        <div class="glass-card p-4 rounded-2xl text-center">
+          <div class="text-[11px] text-slate-400">สถานะประเมิน</div>
+          <div class="text-xs font-semibold text-slate-200 mt-2">${m.status}</div>
+        </div>
+      `;
+
+      const breakdown = document.getElementById('personalBreakdownList');
+      const cats = [
+        { label: "งานแผนก", val: m.dept },
+        { label: "การช่วยเหลือ", val: m.help },
+        { label: "ความประพฤติ", val: m.conduct },
+        { label: "ทัศนคติ", val: m.attitude },
+        { label: "มารยาท/การพูด", val: m.etiquette },
+        { label: "เวลางาน", val: m.time },
+        { label: "ผลงาน", val: m.work }
+      ];
+
+      breakdown.innerHTML = cats.map(c => `
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/50 border border-blue-500/15">
+          <span class="text-slate-200 font-medium">${c.label}</span>
+          <span class="font-bold ${c.val < 0 ? 'text-rose-400' : 'text-blue-300'}">${c.val} คะแนน</span>
+        </div>
+      `).join('');
+
+      const ctx = document.getElementById('personalRadarChart').getContext('2d');
+      if (personalRadarChartInstance) personalRadarChartInstance.destroy();
+
+      personalRadarChartInstance = new Chart(ctx, {
+        type: 'radar',
+        data: {
+          labels: ['งานแผนก', 'การช่วยเหลือ', 'ความประพฤติ', 'ทัศนคติ', 'มารยาท/พูด', 'เวลางาน', 'ผลงาน'],
+          datasets: [{
+            label: `คะแนนของคุณ (${m.name})`,
+            data: [m.dept, m.help, Math.max(0, m.conduct), m.attitude, m.etiquette, m.time, m.work],
+            backgroundColor: 'rgba(59, 130, 246, 0.25)',
+            borderColor: '#3b82f6',
+            pointBackgroundColor: '#60a5fa',
+            pointBorderColor: '#fff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            r: {
+              angleLines: { color: 'rgba(255, 255, 255, 0.12)' },
+              grid: { color: 'rgba(255, 255, 255, 0.12)' },
+              pointLabels: { color: '#cbd5e1', font: { family: 'Kanit', size: 10 } },
+              ticks: { backdropColor: 'transparent', color: '#64748b', stepSize: 20 },
+              suggestedMin: 0,
+              suggestedMax: 100
+            }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+
+    function renderAdminTable(data) {
+      const tbody = document.getElementById('adminTableBody');
+      tbody.innerHTML = '';
+
+      data.forEach((member, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-blue-900/15 transition';
+        tr.innerHTML = `
+          <td class="py-4 px-4 text-center font-bold text-slate-400">#${idx + 1}</td>
+          <td class="py-4 px-6 font-semibold text-slate-100">${member.name}</td>
+          <td class="py-4 px-6 text-center font-bold text-white">${member.overall.toFixed(2)}</td>
+          <td class="py-4 px-6 text-center">
+            <span class="px-3 py-1 rounded-full text-xs font-bold border ${getGradeBadgeStyle(member.grade)}">${member.grade}</span>
+          </td>
+          <td class="py-4 px-6 text-center text-xs ${member.conduct < 0 ? 'text-rose-400 font-bold' : 'text-slate-300'}">${member.conduct}</td>
+          <td class="py-4 px-6 text-center">
+            <button onclick="openEditModal('${member.name}')" class="shiny-cta !py-1 !px-3 !text-[11px]">
+              <span><i data-lucide="edit-2" class="w-3 h-3"></i> แก้ไขคะแนน</span>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    function showView(viewName) {
+      document.getElementById('welcomeView').classList.add('view-hidden');
+      document.getElementById('memberView').classList.add('view-hidden');
+      document.getElementById('adminView').classList.add('view-hidden');
+
+      if (viewName === 'member') document.getElementById('memberView').classList.remove('view-hidden');
+      else if (viewName === 'admin') document.getElementById('adminView').classList.remove('view-hidden');
+      else document.getElementById('welcomeView').classList.remove('view-hidden');
+    }
+
+    function updateAuthUI() {
+      const userBadge = document.getElementById('userBadge');
+      const userRoleText = document.getElementById('userRoleText');
+      const loginBtn = document.getElementById('loginBtn');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const logsBtn = document.getElementById('logsBtn');
+
+      if (currentUser) {
+        userBadge.classList.remove('hidden');
+        userBadge.classList.add('flex');
+        loginBtn.classList.add('hidden');
+        logoutBtn.classList.remove('hidden');
+
+        if (currentUser.role === 'ADMIN') {
+          userRoleText.textContent = 'สิทธิ์: แอดมิน';
+          userRoleText.className = 'font-semibold text-amber-300';
+          logsBtn.classList.remove('hidden');
+        } else {
+          userRoleText.textContent = `ทีมงาน: ${currentUser.name}`;
+          userRoleText.className = 'font-semibold text-blue-300';
+          logsBtn.classList.add('hidden');
+        }
+      } else {
+        userBadge.classList.add('hidden');
+        loginBtn.classList.remove('hidden');
+        logoutBtn.classList.add('hidden');
+        logsBtn.classList.add('hidden');
+      }
+    }
+
+    function openLoginModal() { 
+      document.getElementById('loginModal').classList.remove('hidden');
+      // Reset form state on open
+      document.getElementById('loginRole').value = 'MEMBER';
+      toggleRoleInput();
+    }
+    function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const role = document.getElementById('loginRole').value;
+      const username = document.getElementById('loginUsername').value.trim().toLowerCase();
+      const password = document.getElementById('loginPassword').value;
+      const errorDiv = document.getElementById('loginError');
+
+      errorDiv.classList.add('hidden');
+
+      if (role === 'ADMIN') {
+        if (password === ADMIN_PASSWORD) {
+          currentUser = { role: 'ADMIN', name: 'Admin' };
+          localStorage.setItem('salapakjai_html_user', JSON.stringify(currentUser));
+          updateAuthUI();
+          closeLoginModal();
+          updateAppView();
+        } else {
+          errorDiv.textContent = 'รหัสผ่านแอดมินไม่ถูกต้อง';
+          errorDiv.classList.remove('hidden');
+        }
+      } else {
+        const found = membersData.find(m => m.username.toLowerCase() === username && m.password === password);
+        if (found) {
+          currentUser = { role: 'MEMBER', username: found.username, name: found.name };
+          localStorage.setItem('salapakjai_html_user', JSON.stringify(currentUser));
+          updateAuthUI();
+          closeLoginModal();
+          updateAppView();
+        } else {
+          errorDiv.textContent = 'ชื่อผู้ใช้หรือรหัสผ่านทีมงานไม่ถูกต้อง';
+          errorDiv.classList.remove('hidden');
+        }
+      }
+    }
+
+    function logout() {
+      currentUser = null;
+      localStorage.removeItem('salapakjai_html_user');
+      updateAuthUI();
+      showView('welcome');
+    }
+
+    function openEditModal(memberName) {
+      const member = membersData.find(m => m.name === memberName);
+      if (!member) return;
+
+      editingMemberName = member.name;
+      document.getElementById('editMemberName').textContent = `ทีมงาน: ${member.name}`;
+      document.getElementById('edit_dept').value = member.dept;
+      document.getElementById('edit_help').value = member.help;
+      document.getElementById('edit_conduct').value = member.conduct;
+      document.getElementById('edit_attitude').value = member.attitude;
+      document.getElementById('edit_etiquette').value = member.etiquette;
+      document.getElementById('edit_time').value = member.time;
+      document.getElementById('edit_work').value = member.work;
+
+      document.getElementById('editModal').classList.remove('hidden');
+    }
+
+    function closeEditModal() { document.getElementById('editModal').classList.add('hidden'); }
+
+    function saveScoreUpdate(e) {
+      e.preventDefault();
+      const idx = membersData.findIndex(m => m.name === editingMemberName);
+      if (idx !== -1) {
+        const oldObj = calculateMemberDetails(membersData[idx]);
+
+        membersData[idx].dept = Number(document.getElementById('edit_dept').value);
+        membersData[idx].help = Number(document.getElementById('edit_help').value);
+        membersData[idx].conduct = Number(document.getElementById('edit_conduct').value);
+        membersData[idx].attitude = Number(document.getElementById('edit_attitude').value);
+        membersData[idx].etiquette = Number(document.getElementById('edit_etiquette').value);
+        membersData[idx].time = Number(document.getElementById('edit_time').value);
+        membersData[idx].work = Number(document.getElementById('edit_work').value);
+
+        const newObj = calculateMemberDetails(membersData[idx]);
+
+        logsHistory.unshift({
+          timestamp: new Date().toLocaleTimeString('th-TH'),
+          targetName: editingMemberName,
+          oldScore: oldObj.overall.toFixed(2),
+          newScore: newObj.overall.toFixed(2),
+          details: "ปรับปรุงคะแนนประเมิน"
+        });
+
+        closeEditModal();
+        updateAppView();
+      }
+    }
+
+    function openLogModal() {
+      document.getElementById('logsModal').classList.remove('hidden');
+      const tbody = document.getElementById('logsTableBody');
+      if (logsHistory.length > 0) {
+        tbody.innerHTML = logsHistory.map(log => `
+          <tr class="hover:bg-blue-900/15 transition">
+            <td class="py-3 px-4 font-mono text-slate-400">${log.timestamp}</td>
+            <td class="py-3 px-4 font-semibold text-slate-200">${log.targetName}</td>
+            <td class="py-3 px-4 text-center font-bold">
+              <span class="text-slate-400">${log.oldScore}</span> ➔ <span class="text-emerald-400">${log.newScore}</span>
+            </td>
+            <td class="py-3 px-4 text-slate-300 max-w-xs truncate">${log.details}</td>
+          </tr>
+        `).join('');
+      } else {
+        tbody.innerHTML = '<tr><td colspan="4" class="py-6 text-center text-slate-500">ยังไม่มีประวัติการแก้ไขคะแนน</td></tr>';
+      }
+    }
+
+    function closeLogModal() { document.getElementById('logsModal').classList.add('hidden'); }
+
+    function applyAdminFilter() {
+      const search = document.getElementById('adminSearchInput').value.toLowerCase();
+      const allMembers = getAllCalculatedMembers();
+      const filtered = allMembers.filter(m => m.name.toLowerCase().includes(search));
+      renderAdminTable(filtered);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      updateAuthUI();
+      updateAppView();
+    });
+  </script>
+</body>
+</html>
